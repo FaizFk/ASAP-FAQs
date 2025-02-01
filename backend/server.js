@@ -46,7 +46,29 @@ app.post("/api/faqs", async (req, res) => {
   }
 });
 
-//Login as ADMIN
+// Update an existing FAQ
+app.put("/api/faqs/:id", async (req, res) => {
+  const { id } = req.params;
+  const { question, answer } = req.body;
+
+  try {
+    const updatedFAQ = await FAQ.findByIdAndUpdate(
+      id,
+      { question, answer },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedFAQ) {
+      return res.status(404).json({ error: "FAQ not found" });
+    }
+
+    res.status(200).json({ message: "FAQ updated successfully", faq: updatedFAQ });
+  } catch (err) {
+    res.status(400).json({ error: "Error updating FAQ", details: err.message });
+  }
+});
+
+// Login as ADMIN
 const ADMIN_CREDENTIALS = {
   email: "admin@example.com",
   password: "admin@123",

@@ -1,23 +1,38 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import FAQPage from './FAQPage';
-import FAQDetails from './FAQDetails';
-import AskQuestion from './AskQuestion';
-import Navbar from './components/Navbar';
+import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import FAQPage from "./FAQPage";
+import FAQDetails from "./FAQDetails";
+import AskQuestion from "./AskQuestion";
+import Navbar from "./components/Navbar";
+import AdminLogin from "./AdminLogin";
 
-const App = () => {
-  return (
-    <>
-    <Navbar/>
-    <Router>
-      <Routes>
-        <Route path="/" element={<FAQPage />} />
-        <Route path="/faq/:id" element={<FAQDetails />} />
-        <Route path="/ask" element={<AskQuestion/>}/>
-      </Routes>
-    </Router>
-    </>
-  );
-};
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Navbar />,
+    children: [
+      {
+        path: "/",
+        element: <FAQPage />,
+      },
+      {
+        path: "/ask",
+        element: <AskQuestion />,
+      },
+      {
+        path: "faq/:id",
+        element: <FAQDetails />,
+      },
+      {
+        path: "/login",
+        element: <AdminLogin/>
+      }
+    ],
+  },
+]);
+
+function App() {
+  return <RouterProvider router={router} />;
+}
 
 export default App;

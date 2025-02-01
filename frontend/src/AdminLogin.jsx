@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
 import axios from "axios";
 
 const BACKEND_URL = "http://localhost:5000";
 
 const AdminLogin = () => {
+  const {login} = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -12,12 +14,8 @@ const AdminLogin = () => {
   const handleLogin = async () => {
     try {
       const response = await axios.post(`${BACKEND_URL}/api/admin/login`, { email, password });
-
-      // Save token in localStorage (or use session storage)
-      localStorage.setItem("adminToken", response.data.token);
-
-      alert("Login successful!");
-      navigate("/admin/dashboard");  // Redirect to admin page
+      login(response.data.token);
+      navigate("/");
     } catch (error) {
       alert("Invalid credentials!");
     }

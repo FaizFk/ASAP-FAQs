@@ -54,11 +54,11 @@ const FAQPage = () => {
       <h1 className="text-2xl font-bold mb-6">Frequently Asked Questions</h1>
 
       {faqs.length == 0 ? (
-        <p className="font-bold text-3xl text-green-700">Loading ...</p>
+        <p className="font-bold text-3xl text-green-700">Please Wait ...</p>
       ) : (
         <div className="w-full max-w-md space-y-4">
           {faqs.map((faq) => (
-            <QuestionButton key={faq.id} faq={faq} />
+            <QuestionButton key={faq._id} faq={faq} />
           ))}
         </div>
       )}
@@ -80,7 +80,7 @@ function QuestionButton({ faq }) {
   const navigate = useNavigate();
   return (
     <button
-      onClick={() => navigate(`/faq/${faq.id}`, { state: { faq } })}
+      onClick={() => navigate(`/faq/${faq._id}`, { state: { faq } })}
       className="w-full text-left bg-white p-4 rounded-lg shadow-md text-lg font-medium text-gray-700 cursor-pointer"
     >
       {renderContent(faq.question)}
