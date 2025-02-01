@@ -3,9 +3,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import FAQPage from './FAQPage';
 import FAQDetails from './FAQDetails';
 import AskQuestion from './AskQuestion';
+import Navbar from './components/Navbar';
 
 const App = () => {
   return (
+    <>
+    <Navbar/>
     <Router>
       <Routes>
         <Route path="/" element={<FAQPage />} />
@@ -13,6 +16,7 @@ const App = () => {
         <Route path="/ask" element={<AskQuestion/>}/>
       </Routes>
     </Router>
+    </>
   );
 };
 

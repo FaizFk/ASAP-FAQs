@@ -1,9 +1,66 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const mongoose = require("mongoose");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// MongoDB Connection and Schema Setup
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.log("Error connecting to MongoDB:", err));
+
+const faqSchema = new mongoose.Schema({
+  question: { type: String, required: true },
+  answer: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+});
+
+const FAQ = mongoose.model("FAQ", faqSchema);
+
+// Get all FAQs
+app.get("/api/faqs", async (req, res) => {
+  try {
+    const faqs = await FAQ.find().sort({ createdAt: -1 });
+    res.status(200).json(faqs);
+  } catch (err) {
+    res.status(400).json({ error: "Error fetching FAQs", details: err.message });
+  }
+});
+
+// Post new FAQ
+app.post("/api/faqs", async (req, res) => {
+  const { question, answer } = req.body;
+  try {
+    const newFAQ = new FAQ({ question, answer });
+    await newFAQ.save();
+    res.status(201).json({ message: "FAQ saved successfully", faq: newFAQ });
+  } catch (err) {
+    res.status(400).json({ error: "Error saving FAQ", details: err.message });
+  }
+});
+
+//Login as ADMIN
+const ADMIN_CREDENTIALS = {
+  email: "admin@example.com",
+  password: "admin@123",
+};
+
+app.post("/api/admin/login", (req, res) => {
+  const { email, password } = req.body;
+
+  if (email === ADMIN_CREDENTIALS.email && password === ADMIN_CREDENTIALS.password) {
+    res.status(200).json({ message: "Login successful", token: "fake-admin-token" });
+  } else {
+    res.status(401).json({ error: "Invalid email or password" });
+  }
+});
 
 app.get("/", (req, res) => {
   res.send("Backend is running...");
