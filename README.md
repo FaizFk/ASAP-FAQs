@@ -5,8 +5,7 @@
 Ask and Answer Frequently Asked Questions. It uses Express as backend and React as frontend, and MongoDB as database.
 I have also **deployed backend** on [https://asap-facts-backend.vercel.app](https://asap-facts-backend.vercel.app), hence if you don't want to deploy on your local system you can skip to Example Usage API Section of ReadMe and replace `http://localhost:5000` with `https://asap-facts-backend.vercel.app`
 
-  
-
+I also have deployed frontend on [https://asap-facts-frontend.vercel.app/](https://asap-facts-frontend.vercel.app/)
 ## Installation
 
   
