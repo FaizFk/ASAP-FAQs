@@ -26,7 +26,7 @@ const FAQ = mongoose.model("FAQ", faqSchema);
 
 // Get all FAQs
 async function translateText(text, targetLang) {
-  return text + "Consider that this is " + targetLang;
+  return text + "मुफ़्त अनुवाद एपीआई नहीं मिली ";
 }
 
 app.get("/api/faqs", async (req, res) => {
