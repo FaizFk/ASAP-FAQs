@@ -10,7 +10,7 @@ Ask and Answer Frequently Asked Questions. It uses Express as backend and React 
 
   
 
-### 1. Create .env file in Backend Folder
+- ### Create .env file in Backend Folder
 
 In backend folder create .env file
 
@@ -26,9 +26,7 @@ Enter the text **MONGODB_URI=< Your  MongoDB  URI >** in the file. You can quick
 
   
 
-### 2. Install required packages
-
- - **Run the Backend**
+- ### Run the Backend
 
 ```bash
 cd backend/
@@ -40,9 +38,9 @@ npm i
 npm start
 ```
 
-*After Successfull running of backend you would see the line Server is running on port 5000 and Connected to MongoDB*
+*After Successfull running of backend you would see the line "Server is running on port 5000" and "Connected to MongoDB"*
 
- - **Run the Frontend [Optional]**
+- ### Run the Frontend [Optional]
 
 *I have created a small fronted that uses these APIs, if you just want to test API then you can skip this step*   
 
