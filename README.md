@@ -58,6 +58,14 @@ npm run dev
 ```
 *Click on the link provided and run the web app*
 
+In this app, Anyone can ask the questions, but questions can be answered only by Admin. To Login as Admin click on Login Button.
+#### Credentials
+```bash
+Email: admin@example.com
+Password: admin@123
+```
+(Offcourse Authentication System can be made much stronger, but this will do for now)
+After Login, you can see a "Give Answer" Button to answer the questions.
   
 
 ## API ROUTES
@@ -87,6 +95,11 @@ curl localhost:5000/api/faqs?lang=<lang>
 curl localhost:5000/api/faqs/<id>?lang=<lang>
 ```
 
+**6. Update Specific Question using id** 
+```bash
+curl -X PUT -H "Content-Type: application/json" -d '{"question":"<New Question>", "answer":"<New Answer>"}' localhost:5000/api/faqs/679f3ec4b5f32fd3780444ab
+```
+
 ## Example Usage API
 ```bash
 #Post a FAQ
@@ -106,5 +119,9 @@ curl http://localhost:8000/api/faqs/679f3ec4b5f32fd3780444ab
 
 # Fetch a spcific FAQ in Hindi using id
 curl http://localhost:8000/api/faqs/679f3ec4b5f32fd3780444ab?lang=hi
+
+#Update a specific FAQ using id
+curl -X PUT -H "Content-Type: application/json" -d '{"question":"What is 43+45", "answer":"I dont know"}' localhost:5000/api/faqs/679f3ec4b5f32fd3780444ab
+
 ```
 
