@@ -22,7 +22,11 @@ cd backend/
 touch .env
 ```
 
-Enter the text **MONGODB_URI=< Your  MongoDB  URI >** in the file. You can quickly setup temporary MongoDB using [Railway](https://railway.com/) or read the [docs](https://dev.to/isnan__h/how-to-setup-a-free-mongodb-database-on-railway-fi)
+```bash
+MONGODB_URI=<MongoDB URI>
+```
+
+**Important:** Replace **\<MongoDB URI\>** with Your MongoDB Connection URI in the file. You can quickly setup temporary MongoDB using [Railway](https://railway.com/) or read the [docs](https://dev.to/isnan__h/how-to-setup-a-free-mongodb-database-on-railway-fi)
 
   
 
@@ -81,7 +85,7 @@ curl localhost:5000/api/faqs
  ```bash
 curl localhost:5000/api/faqs/<id>
 ```
-*Replace < id > with FAQ id*
+*Replace \<id\> with FAQ id*
 
 **4.  Get all the Frequently Asked Questions (FAQs) in other language**
  ```bash
