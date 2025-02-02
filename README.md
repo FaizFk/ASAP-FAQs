@@ -17,15 +17,16 @@ In backend folder create .env file
 ```bash
 cd backend/
 ```
+
 ```bash
 touch .env
 ```
 
-Enter the text **MONGODB_URI=< Your  MongoDB  URI >** in the file. You can quickly setup temporary MongoDB using [Railway](https://railway.com/)
+Enter the text **MONGODB_URI=< Your  MongoDB  URI >** in the file. You can quickly setup temporary MongoDB using [Railway](https://railway.com/) or read the [docs](https://dev.to/isnan__h/how-to-setup-a-free-mongodb-database-on-railway-fi)
 
   
 
-#### 2. Install required packages
+### 2. Install required packages
 
  - **Run the Backend**
 
@@ -39,7 +40,7 @@ npm i
 npm start
 ```
 
-*After Successfull running of backend you would see the line "Server is running on port 5000" and "Connected to MongoDB"*
+*After Successfull running of backend you would see the line Server is running on port 5000 and Connected to MongoDB*
 
  - **Run the Frontend [Optional]**
 
