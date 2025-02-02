@@ -1,54 +1,52 @@
-import React, { useState } from "react";
-import { useLocation, Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, Link, useNavigate, useParams } from "react-router-dom";
 import LanguageDropdown from "./components/LanguageDropdown";
-import parse from "html-react-parser";
-import { useAuth } from "./context/AuthContext";
+import { useAuthLanguage } from "./context/AuthLanguageContext";
 import WYSIWYG_Editor from "./components/WYSIWYG_Editor";
 import axios from "axios";
+import ParseText from "./components/ParseText";
 
 const BACKEND_URL = "http://localhost:5000";
 
-//this is to display colorful links
-const renderContent = (html) =>
-  parse(html, {
-    replace: (domNode) => {
-      if (domNode.name === "a") {
-        let href = domNode.attribs.href;
-
-        // If href doesn't start with http/https, prepend https://
-        if (!href.startsWith("http://") && !href.startsWith("https://")) {
-          href = "https://" + href;
-        }
-
-        return (
-          <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline hover:text-blue-700">
-            {domNode.children[0].data}
-          </a>
-        );
-      }
-    },
-  });
-
 const FAQDetails = () => {
+  const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const faq = location.state?.faq;
+  const faqId = location.state?.id || id;
 
-  const { isAuth } = useAuth();
+  const { isAuth, language } = useAuthLanguage();
 
-  const [editing, setEditinng] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [faq, setFaq] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFaq = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_URL}/api/faqs/${faqId}?lang=${language}`);
+        setFaq(response.data);
+      } catch (error) {
+        console.error("Error fetching FAQ:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFaq();
+  }, [faqId, language]);
 
   const handleSubmit = async (answer) => {
     if (!editing) {
-      setEditinng(true);
+      setEditing(true);
       return;
     }
-  
+
     try {
       const updatedFaq = { question: faq.question, answer };
       const response = await axios.put(`${BACKEND_URL}/api/faqs/${faq._id}`, updatedFaq);
       if (response.status === 200) {
-        navigate("/");
+        setFaq(response.data.faq);
+        setEditing(false);
       } else {
         alert("Some Error Occurred");
       }
@@ -56,8 +54,17 @@ const FAQDetails = () => {
       alert("Enter Valid Text");
     }
   };
-  
-  
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col items-center bg-gray-100 p-6">
+        <h1 className="text-2xl font-bold mb-4 text-green-800">Loading ...</h1>
+        <Link to="/" className="mt-6 bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600">
+          Back to FAQs
+        </Link>
+      </div>
+    );
+  }
 
   if (!faq) {
     return (
@@ -72,8 +79,8 @@ const FAQDetails = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-100 p-6">
-      <h1 className="text-2xl font-bold mb-4">{renderContent(faq.question)}</h1>
-      {!editing && <p className="text-gray-700 text-lg">{renderContent(faq.answer)}</p>}
+      <ParseText className="text-2xl font-bold mb-4">{faq.question}</ParseText>
+      {!editing && <ParseText className="text-gray-700 text-lg">{faq.answer}</ParseText>}
 
       {editing && <WYSIWYG_Editor handleSubmit={handleSubmit} placeholderText={"Enter Your Answer Here"} />}
 

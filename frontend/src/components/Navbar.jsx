@@ -1,10 +1,10 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuthLanguage } from "../context/AuthLanguageContext";
 
 const Navbar = () => {
 
-  const {isAuth, login , logout} = useAuth();
+  const {isAuth, login , logout} = useAuthLanguage();
   return (
     <div>
       <nav className="flex justify-between items-center p-4 bg-gray-800 text-white">

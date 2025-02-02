@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import LanguageDropdown from "./components/LanguageDropdown";
 import axios from "axios";
 import parse from "html-react-parser";
+import ParseText from "./components/ParseText";
+import { useAuthLanguage } from "./context/AuthLanguageContext";
 
 const BACKEND_URL = "http://localhost:5000";
 
@@ -19,12 +21,7 @@ const renderContent = (html) =>
         }
 
         return (
-          <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 underline hover:text-blue-700"
-          >
+          <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline hover:text-blue-700">
             {domNode.children[0].data}
           </a>
         );
@@ -34,11 +31,12 @@ const renderContent = (html) =>
 
 const FAQPage = () => {
   const [faqs, setFaqs] = useState([]);
+  const { language } = useAuthLanguage();
 
   useEffect(() => {
     const fetchFaqs = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/api/faqs`);
+        const response = await axios.get(`${BACKEND_URL}/api/faqs?lang=${language}`);
         setFaqs(response.data); // Store the FAQs in state
       } catch (error) {
         console.error("Error fetching FAQs:", error);
@@ -46,7 +44,7 @@ const FAQPage = () => {
     };
 
     fetchFaqs();
-  }, []);
+  }, [language]);
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-100 p-6">
@@ -80,10 +78,10 @@ function QuestionButton({ faq }) {
   const navigate = useNavigate();
   return (
     <button
-      onClick={() => navigate(`/faq/${faq._id}`, { state: { faq } })}
+      onClick={() => navigate(`/faq/${faq._id}`, { state: {id:faq._id}})}
       className="w-full text-left bg-white p-4 rounded-lg shadow-md text-lg font-medium text-gray-700 cursor-pointer"
     >
-      {renderContent(faq.question)}
+      <ParseText>{faq.question}</ParseText>
     </button>
   );
 }
