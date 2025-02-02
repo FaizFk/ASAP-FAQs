@@ -25,12 +25,41 @@ const faqSchema = new mongoose.Schema({
 const FAQ = mongoose.model("FAQ", faqSchema);
 
 // Get all FAQs
+async function translateText(text, targetLang) {
+  return text + "Consider that this is " + targetLang;
+}
+
 app.get("/api/faqs", async (req, res) => {
+  const { lang } = req.query;
   try {
     const faqs = await FAQ.find().sort({ createdAt: -1 });
+    if (lang && lang !== "en") {
+      for (let faq of faqs) {
+        faq.question = await translateText(faq.question, lang);
+        faq.answer = await translateText(faq.answer, lang);
+      }
+    }
     res.status(200).json(faqs);
   } catch (err) {
     res.status(400).json({ error: "Error fetching FAQs", details: err.message });
+  }
+});
+
+app.get("/api/faqs/:id", async (req, res) => {
+  const { id } = req.params;
+  const { lang } = req.query;
+  try {
+    const faq = await FAQ.findById(id);
+    if (!faq) {
+      return res.status(404).json({ error: "FAQ not found" });
+    }
+    if (lang && lang !== "en") {
+      faq.question = await translateText(faq.question, lang);
+      faq.answer = await translateText(faq.answer, lang);
+    }
+    res.status(200).json(faq);
+  } catch (err) {
+    res.status(400).json({ error: "Error fetching this FAQ", details: err.message });
   }
 });
 
@@ -52,11 +81,7 @@ app.put("/api/faqs/:id", async (req, res) => {
   const { question, answer } = req.body;
 
   try {
-    const updatedFAQ = await FAQ.findByIdAndUpdate(
-      id,
-      { question, answer },
-      { new: true, runValidators: true }
-    );
+    const updatedFAQ = await FAQ.findByIdAndUpdate(id, { question, answer }, { new: true, runValidators: true });
 
     if (!updatedFAQ) {
       return res.status(404).json({ error: "FAQ not found" });
