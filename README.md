@@ -3,6 +3,7 @@
   
 
 Ask and Answer Frequently Asked Questions. It uses Express as backend and React as frontend, and MongoDB as database.
+I have also **deployed backend** on [https://asap-facts-backend.vercel.app](https://asap-facts-backend.vercel.app), hence if you don't want to deploy on your local system you can skip to Example Usage API Section of ReadMe and replace `http://localhost:5000` with `https://asap-facts-backend.vercel.app`
 
   
 
@@ -31,7 +32,6 @@ MONGODB_URI=<MongoDB URI>
   
 
 - ### Run the Backend
-
 ```bash
 cd backend/
 ```
@@ -48,7 +48,7 @@ npm start
 
 *I have created a small fronted that uses these APIs, if you just want to test API then you can skip this step*   
 
-Make sure you are in root directory
+Open new Terminal Window and Make sure you are in root directory
 ```bash
 cd frontend/
 ```
